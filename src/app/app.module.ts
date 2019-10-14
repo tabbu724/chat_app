@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 
 import { RouterModule } from "@angular/router";
 import { LoginComponent } from './user/login/login.component';
+import { ChatServiceService } from "./chat-service.service";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { LoginComponent } from './user/login/login.component';
       {path:'',redirectTo:'login',pathMatch:'full'}
     ])
   ],
-  providers: [],
+  providers: [ChatServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
