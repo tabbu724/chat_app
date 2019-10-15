@@ -1,1 +1,59 @@
-<p>signup works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 sticky-top">
+    <a class="navbar-brand">Get Set Chat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/login']">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="">Back</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Signup Here</h1>
+    <form #createForm="ngForm" (ngSubmit)="()">
+        <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" class="form-control" name="title" [(ngModel)]="title" #blogTitle="ngModel" required>
+        </div>
+        <div [hidden]="blogTitle.valid || blogTitle.pristine" class="alert alert-danger">
+            First Name is required
+        </div>
+
+        <div class="form-group">
+            <label for="fname">Last Name</label>
+            <input type="text" id="fname" class="form-control" name="title" [(ngModel)]="title" #blogTitle="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="fname">Email</label>
+            <input type="text" id="fname" class="form-control" name="title" [(ngModel)]="title" #blogTitle="ngModel" required>
+        </div>
+
+        <div class="form-group">
+            <label for="blogDescription">Mobile No.</label>
+            <input type="text" class="form-control" name="blogDescription" [(ngModel)]="description" required>
+        </div>
+
+        <div class="form-group">
+            <label for="blogBody">Password</label>
+            <input type="password" class="form-control" name="" id="" [(ngModel)]="" required>
+        </div>
+
+        <div class="form-group">
+            <label for="blogBody">Api key</label>
+            <input class="form-control" name="blogBody" rows="3" [(ngModel)]="blogBody" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit</button>
+
+    </form>
+</div>
