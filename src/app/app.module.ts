@@ -10,6 +10,9 @@ import { UserModule } from './user/user.module';
 import { RouterModule } from "@angular/router";
 import { LoginComponent } from './user/login/login.component';
 import { ChatServiceService } from "./chat-service.service";
+import { CookieModule } from "ngx-cookie";
+import { SocketService } from "./socket.service";
+
 
 @NgModule({
   declarations: [
@@ -21,13 +24,14 @@ import { ChatServiceService } from "./chat-service.service";
     ChatModule,
     SharedModule,
     UserModule,
+    CookieModule.forRoot(),
     RouterModule.forRoot([
       {path:'login',component:LoginComponent},
       {path:'**',component:LoginComponent},
       {path:'',redirectTo:'login',pathMatch:'full'}
     ])
   ],
-  providers: [ChatServiceService],
+  providers: [ChatServiceService,SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

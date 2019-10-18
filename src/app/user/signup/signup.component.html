@@ -11,7 +11,7 @@
                 <a class="nav-link" [routerLink]="['/login']">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="">Back</a>
+                <a class="nav-link" >Back</a>
             </li>
         </ul>
     </div>
@@ -19,38 +19,35 @@
 
 <div class="container">
     <h1>Signup Here</h1>
-    <form #createForm="ngForm" (ngSubmit)="()">
+    <form #signUpForm="ngForm" (ngSubmit)="signUp()">
         <div class="form-group">
             <label for="fname">First Name</label>
-            <input type="text" id="fname" class="form-control" name="title" [(ngModel)]="title" #blogTitle="ngModel" required>
-        </div>
-        <div [hidden]="blogTitle.valid || blogTitle.pristine" class="alert alert-danger">
-            First Name is required
+            <input type="text" id="fname" class="form-control" name="fname" placeholder="like : Raman"  [(ngModel)]="user_firstname" required autofocus>
         </div>
 
         <div class="form-group">
-            <label for="fname">Last Name</label>
-            <input type="text" id="fname" class="form-control" name="title" [(ngModel)]="title" #blogTitle="ngModel">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" class="form-control" name="lname"  [(ngModel)]="user_lastname" required>
         </div>
 
         <div class="form-group">
-            <label for="fname">Email</label>
-            <input type="text" id="fname" class="form-control" name="title" [(ngModel)]="title" #blogTitle="ngModel" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" name="email"  [(ngModel)]="user_email" required>
         </div>
 
         <div class="form-group">
             <label for="blogDescription">Mobile No.</label>
-            <input type="text" class="form-control" name="blogDescription" [(ngModel)]="description" required>
+            <input type="number" class="form-control" name="blogDescription" [(ngModel)]="user_mobile_num" required>
         </div>
 
         <div class="form-group">
-            <label for="blogBody">Password</label>
-            <input type="password" class="form-control" name="" id="" [(ngModel)]="" required>
+            <label for="pwd">Password</label>
+            <input type="password" class="form-control" name="pwd" id="pwd" [(ngModel)]="user_password" required>
         </div>
 
         <div class="form-group">
-            <label for="blogBody">Api key</label>
-            <input class="form-control" name="blogBody" rows="3" [(ngModel)]="blogBody" required>
+            <label for="apikey">Api key</label>
+            <input class="form-control" name="apikey" id="apikey" type="text" [(ngModel)]="user_apikey" required>
         </div>
 
         <button type="submit" class="btn btn-success">Submit</button>
