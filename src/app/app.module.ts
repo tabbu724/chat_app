@@ -31,7 +31,7 @@ import { SocketService } from "./socket.service";
       {path:'',redirectTo:'login',pathMatch:'full'}
     ])
   ],
-  providers: [ChatServiceService,SocketService],
+  providers: [ChatServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

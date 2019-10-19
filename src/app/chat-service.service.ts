@@ -33,7 +33,7 @@ export class ChatServiceService {
   }
 
   getLocalStorage = (userData) => {
-    return localStorage.getItem(JSON.parse(userData));
+    return localStorage.getItem(userData);
   }
 
   setLocalStorage = (userData) => {

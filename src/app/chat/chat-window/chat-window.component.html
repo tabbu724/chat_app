@@ -1,1 +1,38 @@
-<p>chat-window works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 sticky-top">
+    <a class="navbar-brand">Get Set Chat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/signup']">Signup</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" >Back</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Chat Here</h1>
+    <br>
+    <div class="row" *ngIf="userList.length>0">
+        <div class="row"><h2>online users</h2>
+            <br>
+        </div>
+        
+        <div *ngFor="let user of userList" class="container">
+                <br>
+            <div class="row-md-6 bg-success">
+                {{user.name}}
+            
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
