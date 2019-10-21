@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewChild,ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ChatServiceService } from "../../chat-service.service";
 import { SocketService } from "../../socket.service";
 import { CookieService } from 'ngx-cookie';
@@ -12,8 +12,8 @@ import { ToastrService } from "ngx-toastr";
   providers: [SocketService]
 })
 export class ChatWindowComponent implements OnInit {
-@ViewChild('scrollBar',{read : ElementRef,static:false})
-private scrollBar:ElementRef;
+  @ViewChild('scrollBar', { read: ElementRef, static: false })
+  private scrollBar: ElementRef;
   private authToken;
   private userDetails;
   private username;
@@ -173,35 +173,39 @@ private scrollBar:ElementRef;
     this.getPrevChatWithUser();
   }
 
-  public logout=()=>{
+  public logout = () => {
     this.socketser.logout().subscribe(
-      (response)=>{
-if(response['status']==200){
-  console.log('logout called');
-  this.cookieSer.remove('authToken');
-  this.cookieSer.remove('receiverId');
-  this.cookieSer.remove('receiverName');
-  this.socketser.exitSocket();
-  this._route.navigate(['/login']);
-}
-else{
-  this.toast.error(response['message']);
-}
+      (response) => {
+        if (response['status'] == 200) {
+          console.log('logout called');
+          this.cookieSer.remove('authToken');
+          this.cookieSer.remove('receiverId');
+          this.cookieSer.remove('receiverName');
+          this.socketser.exitSocket();
+          this._route.navigate(['/login']);
+        }
+        else {
+          this.toast.error(response['message']);
+        }
       },
-      (err)=>{
-this.socketser.errorHandler(err);
+      (err) => {
+        this.socketser.errorHandler(err);
       }
     )
+  }
+
+  public showName=(name:string)=>{
+    this.toast.success(`You are chatting with ${name}`);
   }
 
   ngOnInit() {
     this.authToken = this.cookieSer.get('authToken');
     this.userDetails = this.chatser.getLocalStorage('userDetails');
-this.receiverId=this.cookieSer.get('receiverId')
-this.receiverName=this.cookieSer.get('receiverName');
-if(this.receiverName!=null ||this.receiverId!=undefined || this.receiverId!=''){
-  this.userSelectedToChat(this.receiverId,this.receiverName);
-}
+    this.receiverId = this.cookieSer.get('receiverId')
+    this.receiverName = this.cookieSer.get('receiverName');
+    if (this.receiverName != null || this.receiverId != undefined || this.receiverId != '') {
+      this.userSelectedToChat(this.receiverId, this.receiverName);
+    }
     this.checkStatus();
     this.verifyUserConfirmation();
     this.onlineUserList();
