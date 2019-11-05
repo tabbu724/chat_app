@@ -1,1 +1,11 @@
-<p>onlin-users-info works!</p>
+<div class="crop" [style.color]="userColor ? userColor :'white'" [style.background]="userBg ? userBg :'blue'">
+  {{firstChar}}
+</div>
+<div class="about">
+  <div class="name">{{firstName}} {{lastName}}
+    <i *ngIf="msgRead" class="fa fa-circle warning"></i>
+  </div>
+  <div class="status">
+    <i class="fa fa-circle" [ngClass]="userStatus"></i>{{chatStatus}}
+  </div>
+</div>

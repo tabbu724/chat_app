@@ -18,3 +18,4 @@ public firstChar;
   }
 
 }
+

@@ -12,15 +12,15 @@ import { ToastrService } from "ngx-toastr";
   providers: [SocketService]
 })
 export class ChatWindowComponent implements OnInit {
-  @ViewChild('scrollBar', { read: ElementRef, static: false })
-  private scrollBar: ElementRef;
+  @ViewChild('scrollBar', { read: ElementRef, static: false }) 
+  public scrollBar: ElementRef;
   private authToken;
-  private userDetails;
+  public userDetails;
   private username;
-  private userId;
-  private userList;
+  private userId;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+  private userList=[];
   private connDisconnected: boolean;
-  private msgTextBox;
+  private msgTextBox:string;
   private msgList = [];
   private scrollToTop: boolean = false;
   private receiverId;
@@ -49,7 +49,7 @@ export class ChatWindowComponent implements OnInit {
       (data) => {
         this.connDisconnected = false;
         this.socketser.setUser(this.authToken);
-        this.onlineUserList();
+        // this.onlineUserList();
       },
       (err) => {
         this.socketser.errorHandler(err);
@@ -64,10 +64,16 @@ export class ChatWindowComponent implements OnInit {
         this.userList = [];
         for (let x in data) {
           let eachUserInfo = { 'userId': x, 'name': data[x], 'unreadMsgs': 0, 'chatStatus': false };
-          this.userList.push(eachUserInfo)
+          if(eachUserInfo.userId!=this.userId){
+            this.userList.push(eachUserInfo)
+          }
         }
+        // console.log(this.userList.length);
+        
       },
       (err) => {
+        console.log(err);
+        
         this.socketser.errorHandler(err);
       });
     console.log('userlist in fn', this.userList);
@@ -85,7 +91,10 @@ export class ChatWindowComponent implements OnInit {
   }
 
   public createMsg = () => {
-    if (this.msgTextBox) {
+    // console.log(`before ${this.msgTextBox.length}`);
+    console.log('send msg triggerred');
+    
+    if (this.msgTextBox!='') {
       let msgObject =
       {
         senderName: `${this.userDetails.firstName} ${this.userDetails.lastName}`,
@@ -95,31 +104,38 @@ export class ChatWindowComponent implements OnInit {
         message: this.msgTextBox,
         createdOn: new Date
       };
+      console.log(`chat obj=${msgObject}`);
       this.socketser.sendChatMsg(msgObject);
       this.pushToChatWindow(msgObject);
+      // console.log(`msglist=${this.msgList.length}`);
+      
     }
     else {
       this.toast.warning('Cannot send an empty message');
     }
+
   }
 
   public pushToChatWindow = (data) => {
     this.msgTextBox = ''
-    this.msgList.push(data.message);
+    this.msgList.push(data);
     this.scrollToTop = false;
   }
 
   public receiveMsgs = () => {
+    console.log('receive msg triggerred');
+    
     this.socketser.receiveMsgs(this.userDetails.userId).subscribe(
       (msgObject) => {
-        //receiverId of the person logged in user is chatting with
-        this.receiverId === msgObject.senderId ? this.msgList.push(msgObject.message) : '';
+        //receiverId of the person with whom logged in user is chatting 
+        this.receiverId == msgObject.senderId ? this.msgList.push(msgObject.message) : '';
         this.scrollToTop = false;
-        this.toast.success(`You ahve recived a message from ${msgObject.senderName}`);
+        this.toast.success(`You have received a message from ${msgObject.senderName}`);
+        console.log('msg received');
+        
       },
-      (err) => {
-        this.socketser.errorHandler(err);
-      });
+      // 
+      );
   }
 
   //to set the receiver with whom user is chatting
@@ -144,23 +160,27 @@ export class ChatWindowComponent implements OnInit {
       senderId: receiverId//user id of the other user with which logged in user wants to chat
     }
     this.socketser.markChatAsRead(chatIdDetailsObject);
-
+    this.getPrevChatWithUser();
   }
 
   public getPrevChatWithUser = () => {
     let previousChatMsgs = this.msgList.length > 0 ? this.msgList.slice() : [];
     this.socketser.getPrevChat(this.userDetails.userId, this.receiverId, this.pageValue * 10)
       .subscribe((response) => {
+        console.log(`getting prev chat response=${response['status']}`);
+        
         if (response['status'] == 200) {
-          this.msgList = response['data'].push(previousChatMsgs);
+          this.msgList = response['data'].concat(previousChatMsgs);
         }
         else {
           this.msgList = previousChatMsgs;
-          this.toast.warning('No previous mesages available');
+          this.toast.warning('No previous messages available');
         }
         this.loadingPrevChat = false;
       },
         (err) => {
+          console.log(`not getting prev chat response`);
+          this.toast.error('some error occurred');
           this.socketser.errorHandler(err)
         })
 
@@ -176,7 +196,7 @@ export class ChatWindowComponent implements OnInit {
   public logout = () => {
     this.socketser.logout().subscribe(
       (response) => {
-        if (response['status'] == 200) {
+        if (response['status'] === 200) {
           console.log('logout called');
           this.cookieSer.remove('authToken');
           this.cookieSer.remove('receiverId');
@@ -185,10 +205,11 @@ export class ChatWindowComponent implements OnInit {
           this._route.navigate(['/login']);
         }
         else {
-          this.toast.error(response['message']);
+          this.toast.error(response['status']);
         }
       },
       (err) => {
+        this.toast.error('some error occurred');
         this.socketser.errorHandler(err);
       }
     )
@@ -201,9 +222,11 @@ export class ChatWindowComponent implements OnInit {
   ngOnInit() {
     this.authToken = this.cookieSer.get('authToken');
     this.userDetails = this.chatser.getLocalStorage('userDetails');
+    console.log(`userDetails=${this.userDetails}`)
     this.receiverId = this.cookieSer.get('receiverId')
     this.receiverName = this.cookieSer.get('receiverName');
-    if (this.receiverName != null || this.receiverId != undefined || this.receiverId != '') {
+    console.log(this.receiverId,this.receiverName);
+    if (this.receiverName != null && this.receiverId != undefined && this.receiverId != '') {
       this.userSelectedToChat(this.receiverId, this.receiverName);
     }
     this.checkStatus();

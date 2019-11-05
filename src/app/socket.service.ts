@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import io from "socket.io-client";
 import { Observable } from "rxjs";
-import { HttpErrorResponse ,HttpClient} from '@angular/common/http';
+import { HttpErrorResponse ,HttpClient,HttpParams,HttpHeaders} from '@angular/common/http';
 import { CookieService } from "ngx-cookie";
+// import "rxjs/add/operator/catch";
+// import "rxjs/add/operator/do";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private url = 'https://chatapi.edwisor.com';
+  private authToken=this.cookie.get('authToken');
+  private userId=this.cookie.get('userId');
   private socket;
   constructor(private http:HttpClient,private cookie:CookieService) {
     // initial connection setup through handshake
@@ -72,13 +76,14 @@ this.socket.emit('mark-chat-as-seen',chatDetailsObject);
 
 public getPrevChat=(senderId,receiverId,skip)=>{
   return this.http.get(`${this.url}/api/v1/chat/get/for/user`,
-  {params:{senderId:senderId,receiverId:receiverId,skip:skip,authToken:this.cookie.get('authToken')}});
+  {params:{senderId:senderId,receiverId:receiverId,skip:skip,authToken:this.cookie.get('authToken')}}
+  )
 
 }
 
 public logout=()=>{
   return this.http.post(`${this.url}/api/v1/users/logout?authToken=
-  ${this.cookie.get('authToken')}`,{'userId':this.cookie.get('userId')});
+  ${this.authToken}`,this.userId);
 }
 
   //error handler
