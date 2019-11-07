@@ -221,7 +221,7 @@ export class ChatWindowComponent implements OnInit {
 
   ngOnInit() {
     this.authToken = this.cookieSer.get('authToken');
-    this.userDetails = this.chatser.getLocalStorage('userDetails');
+    this.userDetails = JSON.parse(this.chatser.getLocalStorage('userDetails'));
     console.log(`userDetails=${this.userDetails}`)
     this.receiverId = this.cookieSer.get('receiverId')
     this.receiverName = this.cookieSer.get('receiverName');

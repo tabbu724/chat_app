@@ -123,7 +123,7 @@
         </div>
         <!-- end chat-header -->
   
-        <div #scrollBar [scrollTop]="(scrollToChatTop)?0:scrollBar.scrollHeight" class="chat-history" *ngIf="receiverName">
+        <div #scrollBar [scrollTop]="(scrollToTop)?0:scrollBar.scrollHeight" class="chat-history" *ngIf="receiverName">
   
           <ul>
             <li class="textCenter" *ngIf="receiverName">
