@@ -82,8 +82,7 @@ public getPrevChat=(senderId,receiverId,skip)=>{
 }
 
 public logout=()=>{
-  return this.http.post(`${this.url}/api/v1/users/logout?authToken=
-  ${this.authToken}`,this.userId);
+  return this.http.post(`${this.url}/api/v1/users/logout?authToken=${this.authToken}`,this.userId);
 }
 
   //error handler

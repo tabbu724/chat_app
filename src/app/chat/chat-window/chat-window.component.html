@@ -118,7 +118,7 @@
           <app-first-char [name]="receiverName" [bgColor]="'blue'" [textColor]="'white'" (notify)="showName($event)"></app-first-char>
   
           <div class="chat-about">
-            <div class="chat-with">Chat with {{receiverName}}</div>
+            <div class="chat-with">Chatting with {{receiverName}}</div>
           </div>
         </div>
         <!-- end chat-header -->
@@ -136,6 +136,7 @@
   
             </li>
             <li class="clearfix" *ngFor="let message of msgList">
+            
               <div class="message-data" [ngClass]="{'align-right': message.senderId == userDetails.userId}">
                 <span class="message-data-time">{{message?.createdOn | date: 'medium' }}</span> &nbsp; &nbsp;
                 <span class="message-data-name floatLeft" *ngIf="message.senderId != userDetails.userId">
