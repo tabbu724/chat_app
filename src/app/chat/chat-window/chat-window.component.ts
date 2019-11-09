@@ -4,6 +4,7 @@ import { SocketService } from "../../socket.service";
 import { CookieService } from 'ngx-cookie';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { Message,UserAuthorised } from "./chat";
 
 @Component({
   selector: 'app-chat-window',
@@ -11,7 +12,7 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ['./chat-window.component.css'],
   providers: [SocketService]
 })
-export class ChatWindowComponent implements OnInit {
+export class ChatWindowComponent implements OnInit{
   @ViewChild('scrollBar', { read: ElementRef, static: false }) 
   public scrollBar: ElementRef;
   private authToken;
@@ -33,16 +34,17 @@ export class ChatWindowComponent implements OnInit {
     this.userId = this.cookieSer.get('userId');
   }
 
-  public checkStatus = () => {
+  // implementation of the method defined in UserAuthorised interface
+  // public checkStatus = () => {
 
-    if (this.authToken == null || this.authToken == undefined || this.authToken == '') {
-      this._route.navigate(['/login']);
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
+  //   if (this.authToken == null || this.authToken == undefined || this.authToken == '') {
+  //     this._route.navigate(['/login']);
+  //     return false;
+  //   }
+  //   else {
+  //     return true;
+  //   }
+  // }
 
   public verifyUserConfirmation = () => {
     this.socketser.verifyUser().subscribe(
@@ -95,7 +97,8 @@ export class ChatWindowComponent implements OnInit {
     console.log('send msg triggerred');
     
     if (this.msgTextBox!='') {
-      let msgObject =
+      // using message interface as a datatype
+      let msgObject : Message=
       {
         senderName: `${this.userDetails.firstName} ${this.userDetails.lastName}`,
         senderId: this.userDetails.userId,
@@ -128,7 +131,7 @@ export class ChatWindowComponent implements OnInit {
     this.socketser.receiveMsgs(this.userDetails.userId).subscribe(
       (msgObject) => {
         //receiverId of the person with whom logged in user is chatting 
-        this.receiverId == msgObject.senderId ? this.msgList.push(msgObject.message) : '';
+        this.receiverId == msgObject.senderId ? this.msgList.push(msgObject) : '';
         this.scrollToTop = false;
         this.toast.success(`You have received a message from ${msgObject.senderName}`);
         console.log('msg received');
@@ -217,9 +220,9 @@ export class ChatWindowComponent implements OnInit {
 
   public showName=(name:string)=>{
     this.toast.success(`You are chatting with ${name}`);
-  }
+  }                                                                                                                                                         
 
-  ngOnInit() {
+  ngOnInit() {                                                                                                                                                                                                                                                                    
     this.authToken = this.cookieSer.get('authToken');
     this.userDetails = JSON.parse(this.chatser.getLocalStorage('userDetails'));
     console.log(`userDetails=${this.userDetails}`)
@@ -229,8 +232,8 @@ export class ChatWindowComponent implements OnInit {
     if (this.receiverName != null && this.receiverId != undefined && this.receiverId != '') {
       this.userSelectedToChat(this.receiverId, this.receiverName);
     }
-    this.checkStatus();
-    this.verifyUserConfirmation();
+    // this.checkStatus();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    this.verifyUserConfirmation();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     this.onlineUserList();
     this.receiveMsgs();
   }

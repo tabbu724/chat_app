@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { SharedModule } from '../shared/shared.module';
 import { removeSpecialChar } from '../shared/remove-special-char/remove-special-char.pipe';
 import { FormsModule } from '@angular/forms';
+import { ChatrouteguardService } from "./chatrouteguard.service";
 
 
 @NgModule({
@@ -12,10 +13,11 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule.forChild([
-      {path:'chatwindow',component:ChatWindowComponent}
+      {path:'chatwindow',component:ChatWindowComponent,canActivate:[ChatrouteguardService]}
     ]),
     SharedModule,
     FormsModule
-  ]
+  ],
+  providers:[ChatrouteguardService]
 })
 export class ChatModule { }
